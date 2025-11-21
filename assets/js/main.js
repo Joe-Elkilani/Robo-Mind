@@ -153,6 +153,48 @@ const testimonialsSwiper = new Swiper(".testimonials-slider", {
         },
     },
 });
+const faqItems = document.querySelectorAll(".faq-item");
+
+faqItems.forEach((item) => {
+    item.addEventListener("click", () => {
+        const answer = item.querySelector(".faq-answer");
+        const icon = item.querySelector(".faq-icon");
+
+        if (answer.classList.contains("hidden")) {
+            answer.classList.remove("hidden");
+            icon.textContent = "-";
+        } else {
+            answer.classList.add("hidden");
+            icon.textContent = "+";
+        }
+    });
+});
+
+emailjs.init("DieSxLv94d4cyn2zq"); // ضع الـ User ID من EmailJS
+
+const contactForm = document.getElementById("contactForm");
+const formMessage = document.getElementById("formMessage");
+
+contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const templateParams = {
+        name: contactForm.name.value,
+        email: contactForm.email.value,
+        message: contactForm.message.value,
+    };
+
+    emailjs.send("service_ukdc5n6", "template_fn62eo9", templateParams)
+        .then(function () {
+            formMessage.textContent = "Your message has been sent successfully!";
+            formMessage.classList.add("text-green-600");
+            contactForm.reset();
+        }, function (error) {
+            formMessage.textContent = "Oops! Something went wrong. Please try again.";
+            formMessage.classList.add("text-red-600");
+            console.error("EmailJS error:", error);
+        });
+});
 
 // emailjs.send('service_ukdc5n6', 'template_fn62eo9', {
 //     from_name: document.querySelector('#name').value,
